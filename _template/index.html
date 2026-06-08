@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentation Title</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <style>
+    /* BBB brand overrides — update once brand colors are defined */
+    :root {
+      --r-background-color: #0a0a0a;
+      --r-main-color: #ffffff;
+      --r-heading-color: #ffffff;
+      --r-link-color: #cccccc;
+    }
+    .reveal h1, .reveal h2 { font-weight: 600; }
+    .reveal .subtitle { opacity: 0.6; font-size: 0.8em; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- TITLE SLIDE -->
+      <section>
+        <h1>Presentation Title</h1>
+        <p class="subtitle">Subtitle or date</p>
+      </section>
+
+      <!-- SECTION DIVIDER (optional) -->
+      <section>
+        <h2>Section Title</h2>
+      </section>
+
+      <!-- CONTENT SLIDE: bullet points -->
+      <section>
+        <h2>Slide Title</h2>
+        <ul>
+          <li>Point one</li>
+          <li>Point two</li>
+          <li>Point three</li>
+        </ul>
+      </section>
+
+      <!-- CONTENT SLIDE: two columns -->
+      <section>
+        <h2>Slide Title</h2>
+        <div style="display:flex; gap:2rem;">
+          <div style="flex:1">
+            <p>Left column content</p>
+          </div>
+          <div style="flex:1">
+            <p>Right column content</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CLOSING SLIDE -->
+      <section>
+        <h2>Thank you</h2>
+        <p class="subtitle">Contact or next steps</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,         // URL updates as you advance slides (enables direct linking)
+      controls: true,     // Arrow controls visible on screen
+      progress: true,     // Progress bar at bottom
+      center: true,       // Vertically center slide content
+      transition: 'fade', // Options: none, fade, slide, convex, concave, zoom
+    });
+  </script>
+</body>
+</html>
