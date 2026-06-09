@@ -4,77 +4,368 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presentation Title</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+
   <style>
-    /* BBB brand overrides — update once brand colors are defined */
+    /* ─── BBB Brand Tokens ─────────────────────────────────── */
     :root {
-      --r-background-color: #0a0a0a;
-      --r-main-color: #ffffff;
-      --r-heading-color: #ffffff;
-      --r-link-color: #cccccc;
+      --cream:   #F0EBE0;
+      --charcoal:#333333;
+      --red:     #C04040;
+      --yellow:  #FFE500;
+      --black:   #111111;
+      --white:   #FFFFFF;
+      --gray:    #888888;
     }
-    .reveal h1, .reveal h2 { font-weight: 600; }
-    .reveal .subtitle { opacity: 0.6; font-size: 0.8em; }
+
+    /* ─── Reveal Base ──────────────────────────────────────── */
+    .reveal-viewport { background: var(--cream); }
+    .reveal {
+      font-family: 'Inter', sans-serif;
+      font-size: 38px;
+      color: var(--charcoal);
+    }
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 900;
+      text-transform: none;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: inherit;
+    }
+    .reveal h1 { font-size: 2.2em; }
+    .reveal h2 { font-size: 1.5em; }
+    .reveal h3 { font-size: 1em; font-weight: 700; }
+    .reveal p  { font-size: 0.6em; line-height: 1.6; }
+    .reveal ul { font-size: 0.6em; line-height: 1.8; list-style: none; padding: 0; }
+    .reveal ul li::before { content: "// "; color: var(--red); font-weight: 700; }
+    .reveal a  { color: var(--red); }
+    .reveal .progress span { background: var(--red); }
+    .reveal .controls { color: var(--red); }
+
+    /* ─── Logo utility ─────────────────────────────────────── */
+    .bbb-logo {
+      position: absolute;
+      top: 1.4rem;
+      left: 1.8rem;
+      width: 160px;
+      opacity: 1;
+      z-index: 10;
+    }
+    .bbb-logo-sm {
+      width: 110px;
+    }
+
+    /* ─── Slide Modes ──────────────────────────────────────── */
+
+    /* CREAM (default) */
+    section.cream, section:not([class]) {
+      background: var(--cream);
+      color: var(--charcoal);
+    }
+
+    /* WHITE */
+    section.white {
+      background: var(--white);
+      color: var(--charcoal);
+    }
+
+    /* DARK */
+    section.dark {
+      background: var(--black);
+      color: var(--white);
+    }
+    section.dark h1,
+    section.dark h2,
+    section.dark h3 { color: var(--white); }
+    section.dark ul li::before { color: var(--yellow); }
+
+    /* RED */
+    section.red {
+      background: var(--red);
+      color: var(--white);
+    }
+    section.red h1,
+    section.red h2,
+    section.red h3 { color: var(--white); }
+
+    /* ─── Title Slide ──────────────────────────────────────── */
+    .title-slide {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      height: 100%;
+      padding: 0 !important;
+      text-align: left;
+    }
+    .title-slide .title-body {
+      padding: 3rem 3rem 2rem;
+      flex: 1;
+    }
+    .title-slide h1 {
+      font-size: 2.6em;
+      margin: 0.8em 0 0.2em;
+      color: var(--charcoal);
+    }
+    .title-slide .subtitle {
+      font-family: 'Roboto Slab', serif;
+      font-size: 0.7em;
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: 0.01em;
+    }
+    .title-slide .title-footer {
+      background: var(--red);
+      color: var(--white);
+      width: 100%;
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 0.4em;
+      font-family: 'Inter', sans-serif;
+    }
+    .title-slide .title-footer strong { display: block; font-size: 1.1em; margin-bottom: 0.3em; }
+
+    /* ─── Section Divider ──────────────────────────────────── */
+    .section-slide {
+      text-align: left !important;
+    }
+    .section-slide .section-number {
+      font-family: 'Roboto Slab', serif;
+      font-size: 2.5em;
+      font-weight: 900;
+      color: var(--red);
+      display: block;
+      border-bottom: 2px solid var(--red);
+      padding-bottom: 0.2em;
+      margin-bottom: 0.4em;
+      width: 3em;
+    }
+    .section-slide h2 { font-size: 1.3em; }
+
+    /* ─── Content Slide ────────────────────────────────────── */
+    .content-slide {
+      text-align: left !important;
+    }
+    .content-slide h2 {
+      border-bottom: 2px solid var(--red);
+      padding-bottom: 0.3em;
+      margin-bottom: 0.6em;
+    }
+
+    /* ─── Two Column ───────────────────────────────────────── */
+    .two-col {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .two-col > div { flex: 1; }
+    .two-col .col-label {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 700;
+      font-size: 0.55em;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 0.5em;
+    }
+
+    /* ─── Impact / Statement slide ─────────────────────────── */
+    .impact-slide {
+      display: flex !important;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: left !important;
+    }
+    .impact-slide h1 {
+      font-size: 2.8em;
+      max-width: 70%;
+    }
+    .impact-slide .accent { color: var(--yellow); }
+
+    /* ─── Closing Slide ────────────────────────────────────── */
+    .close-slide {
+      text-align: left !important;
+    }
+    .close-slide h1 { font-size: 2.2em; margin-bottom: 0.3em; }
+    .close-slide .contact {
+      font-size: 0.5em;
+      color: var(--gray);
+      margin-top: 2em;
+      line-height: 2;
+    }
+    section.dark .close-slide .contact { color: rgba(255,255,255,0.5); }
   </style>
 </head>
 <body>
-  <div class="reveal">
-    <div class="slides">
+<div class="reveal">
+<div class="slides">
 
-      <!-- TITLE SLIDE -->
-      <section>
-        <h1>Presentation Title</h1>
-        <p class="subtitle">Subtitle or date</p>
-      </section>
 
-      <!-- SECTION DIVIDER (optional) -->
-      <section>
-        <h2>Section Title</h2>
-      </section>
-
-      <!-- CONTENT SLIDE: bullet points -->
-      <section>
-        <h2>Slide Title</h2>
-        <ul>
-          <li>Point one</li>
-          <li>Point two</li>
-          <li>Point three</li>
-        </ul>
-      </section>
-
-      <!-- CONTENT SLIDE: two columns -->
-      <section>
-        <h2>Slide Title</h2>
-        <div style="display:flex; gap:2rem;">
-          <div style="flex:1">
-            <p>Left column content</p>
-          </div>
-          <div style="flex:1">
-            <p>Right column content</p>
-          </div>
+  <!-- ═══════════════════════════════════════════════════════
+       TITLE SLIDE
+       Edit: h1 = presentation title, .subtitle = topic/date
+       .title-footer left = client/project, right = contact
+  ═══════════════════════════════════════════════════════ -->
+  <section class="cream">
+    <div class="title-slide">
+      <div class="title-body">
+        <img src="../_assets/logo-charcoal.png" alt="Bird Bear Beast" style="width:160px; margin-bottom:1rem;">
+        <h1>Presentation<br>Title Here</h1>
+        <p class="subtitle">Project Name &nbsp;|&nbsp; Month Year</p>
+      </div>
+      <div class="title-footer">
+        <div>
+          <strong>Client Name</strong>
+          Project description<br>
+          Version 1.0
         </div>
-      </section>
-
-      <!-- CLOSING SLIDE -->
-      <section>
-        <h2>Thank you</h2>
-        <p class="subtitle">Contact or next steps</p>
-      </section>
-
+        <div style="text-align:right;">
+          614.670.1011<br>
+          worsley@birdbearbeast.com
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,         // URL updates as you advance slides (enables direct linking)
-      controls: true,     // Arrow controls visible on screen
-      progress: true,     // Progress bar at bottom
-      center: true,       // Vertically center slide content
-      transition: 'fade', // Options: none, fade, slide, convex, concave, zoom
-    });
-  </script>
+
+  <!-- ═══════════════════════════════════════════════════════
+       IMPACT SLIDE (dark)
+       Use for opening statement, key insight, or transition.
+       Swap .accent color on any word you want to pop in yellow.
+  ═══════════════════════════════════════════════════════ -->
+  <section class="dark">
+    <div class="impact-slide">
+      <h1>There is always<br><span class="accent">a solution.</span></h1>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION DIVIDER (cream)
+       Use between major sections.
+       .section-number = 01 / 02 / 03 etc.
+  ═══════════════════════════════════════════════════════ -->
+  <section class="cream">
+    <div class="section-slide">
+      <span class="section-number">01</span>
+      <h2>Section Title</h2>
+      <p>Optional one-line framing for this section.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       CONTENT SLIDE: bullet list (cream)
+  ═══════════════════════════════════════════════════════ -->
+  <section class="cream">
+    <div class="content-slide">
+      <h2>Slide Title</h2>
+      <ul>
+        <li>Point one — keep it tight</li>
+        <li>Point two — one idea per line</li>
+        <li>Point three</li>
+        <li>Point four</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       CONTENT SLIDE: two columns (white)
+       Left = label + content, Right = label + content
+  ═══════════════════════════════════════════════════════ -->
+  <section class="white">
+    <div class="content-slide">
+      <h2>Slide Title</h2>
+      <div class="two-col">
+        <div>
+          <span class="col-label">Left Column</span>
+          <p>Content, context, or supporting detail for the left side.</p>
+        </div>
+        <div>
+          <span class="col-label">Right Column</span>
+          <p>Content, context, or supporting detail for the right side.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       CONTENT SLIDE: numbered list (white)
+       Good for process steps, phases, or priorities
+  ═══════════════════════════════════════════════════════ -->
+  <section class="white">
+    <div class="content-slide">
+      <h2>Slide Title</h2>
+      <div style="display:flex; flex-direction:column; gap:1.2rem; margin-top:0.5em;">
+        <div style="display:flex; gap:1.5rem; align-items:flex-start; font-size:0.6em;">
+          <span style="font-family:'Roboto Slab',serif; font-weight:900; font-size:2em; color:var(--red); line-height:1; min-width:1.2em;">01</span>
+          <div><strong>Step or phase name.</strong><br>Supporting description goes here.</div>
+        </div>
+        <div style="display:flex; gap:1.5rem; align-items:flex-start; font-size:0.6em;">
+          <span style="font-family:'Roboto Slab',serif; font-weight:900; font-size:2em; color:var(--red); line-height:1; min-width:1.2em;">02</span>
+          <div><strong>Step or phase name.</strong><br>Supporting description goes here.</div>
+        </div>
+        <div style="display:flex; gap:1.5rem; align-items:flex-start; font-size:0.6em;">
+          <span style="font-family:'Roboto Slab',serif; font-weight:900; font-size:2em; color:var(--red); line-height:1; min-width:1.2em;">03</span>
+          <div><strong>Step or phase name.</strong><br>Supporting description goes here.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       IMPACT SLIDE (red)
+       Use for a key quote, bold claim, or transition moment.
+  ═══════════════════════════════════════════════════════ -->
+  <section class="red">
+    <div class="impact-slide">
+      <h1>"A bold statement or key quote goes here."</h1>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       CLOSING SLIDE (dark)
+       Edit contact info. h1 = closing line or CTA.
+  ═══════════════════════════════════════════════════════ -->
+  <section class="dark">
+    <div class="close-slide">
+      <img src="../_assets/logo-dark.png" alt="Bird Bear Beast" style="width:200px; margin-bottom:1.5rem; filter:brightness(0) invert(1);">
+      <h1>Let's make<br><span style="color:var(--yellow)">some magic.</span></h1>
+      <div class="contact">
+        Bird Bear Beast Ltd. &nbsp;|&nbsp; Dublin, OH<br>
+        worsley@birdbearbeast.com &nbsp;|&nbsp; 614.670.1011
+      </div>
+    </div>
+  </section>
+
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    center: false,      // left-aligned layouts look better without forced centering
+    margin: 0.08,
+    transition: 'fade',
+    transitionSpeed: 'fast',
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heritage Cooperative — Long Range Planning 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@300;400;700&family=Josefin+Sans:wght@300;400;600&family=Nunito:wght@900&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Zilla Slab', serif; background: #fff; color: #222; }
+
+/* ─── Fixed chrome ─────────────────────────────────────────── */
+
+#tb {
+  position: fixed; top: 0; left: 0; right: 0; height: 4px;
+  background: #0F4E48; z-index: 200;
+  transition: background 0.5s ease;
+}
+
+#sb {
+  position: fixed; top: 4px; left: 0; bottom: 0;
+  width: 20px; background: #0F4E48;
+  display: flex; flex-direction: column;
+  z-index: 150; overflow: hidden;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#sb-cap { height: 5px; background: #E8B820; flex-shrink: 0; }
+
+.sbs {
+  display: flex; align-items: center;
+  padding: 0 6px;
+  transition: border-right 0.2s;
+}
+.sbl {
+  opacity: 0;
+  font-family: 'Josefin Sans'; font-size: 8px;
+  letter-spacing: 0.07em; white-space: nowrap;
+  margin-left: 7px;
+  transition: opacity 0.15s;
+}
+
+/* ─── Page layout ───────────────────────────────────────────── */
+
+#content { margin-left: 20px; padding-top: 4px; }
+
+.sec { position: relative; overflow: hidden; }
+
+/* ─── Hero ──────────────────────────────────────────────────── */
+
+#hero {
+  min-height: 100vh; background: #0F4E48;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 100px 80px;
+}
+
+/* ─── Stat panels ───────────────────────────────────────────── */
+
+.stat-sec {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 100px 80px;
+}
+
+/* ─── Strategic priorities (accordion) ─────────────────────── */
+
+#priorities {
+  min-height: 100vh;
+  background: #F5F2EC;
+  padding: 100px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#priorities .p-inner {
+  display: flex; gap: 80px; align-items: flex-start; margin-top: 48px;
+}
+#priorities .p-intro { flex: 0 0 240px; }
+#priorities .p-list  { flex: 1; }
+
+.acc-item { border-top: 0.5px solid #d0c8bc; }
+.acc-item:last-child { border-bottom: 0.5px solid #d0c8bc; }
+
+.acc-head {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: 22px 0; cursor: pointer; user-select: none;
+}
+.acc-head:hover .acc-title { color: #0F4E48; }
+
+.acc-num {
+  font-family: 'Josefin Sans'; font-size: 10px; letter-spacing: 0.1em;
+  color: rgba(15,78,72,0.32); padding-top: 4px; flex-shrink: 0; width: 24px;
+}
+.acc-title {
+  font-family: 'Zilla Slab'; font-weight: 700; font-size: 18px;
+  color: #1a1a1a; line-height: 1.2; flex: 1;
+  transition: color 0.2s;
+}
+.acc-sub {
+  font-family: 'Josefin Sans'; font-size: 8px; letter-spacing: 0.08em;
+  color: rgba(15,78,72,0.38); margin-top: 5px;
+}
+.acc-arrow {
+  font-size: 14px; color: rgba(15,78,72,0.32);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  flex-shrink: 0; padding-top: 3px;
+}
+.acc-item.open .acc-arrow { transform: rotate(90deg); }
+
+.acc-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.acc-item.open .acc-body { max-height: 240px; }
+
+.acc-body-inner { padding: 0 0 24px 42px; }
+.acc-body-inner p {
+  font-family: 'Zilla Slab'; font-weight: 300; font-size: 14px;
+  color: #555; line-height: 1.85; max-width: 520px; margin-bottom: 14px;
+}
+.acc-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag {
+  font-family: 'Josefin Sans'; font-size: 8px; letter-spacing: 0.07em;
+  padding: 4px 10px; border-radius: 2px;
+}
+.tag-div  { background: rgba(15,78,72,0.08);  color: rgba(15,78,72,0.6); }
+.tag-time { background: rgba(232,184,32,0.15); color: rgba(140,96,0,0.75); }
+
+/* ─── Performance bars ──────────────────────────────────────── */
+
+#performance {
+  min-height: 100vh; background: #fff;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 100px 80px;
+}
+#performance .p-inner {
+  display: flex; gap: 80px; align-items: flex-start; margin-top: 48px;
+}
+#performance .p-intro { flex: 0 0 220px; }
+
+.bar-rows { flex: 1; }
+
+.bar-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 0; border-bottom: 0.5px solid #eeebe6;
+}
+.bar-row:first-child { border-top: 0.5px solid #eeebe6; }
+
+.bar-lbl {
+  font-family: 'Josefin Sans'; font-size: 9px; letter-spacing: 0.07em;
+  color: rgba(15,78,72,0.48); flex: 0 0 88px; text-align: right;
+}
+.bar-track {
+  flex: 1; height: 7px;
+  background: rgba(15,78,72,0.07); border-radius: 2px;
+  position: relative; overflow: hidden;
+}
+.bar-fill {
+  height: 100%; border-radius: 2px;
+  width: 0; transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bar-val {
+  font-family: 'Nunito'; font-weight: 900; font-size: 15px;
+  flex: 0 0 46px;
+}
+.bar-note {
+  font-family: 'Josefin Sans'; font-size: 8px; letter-spacing: 0.04em;
+  flex: 0 0 52px; color: rgba(15,78,72,0.35);
+}
+
+/* ─── Photo break ───────────────────────────────────────────── */
+
+#photo {
+  height: 50vh; min-height: 300px;
+  position: relative; overflow: hidden; background: #1A3D30;
+}
+#photo img { width: 100%; height: 100%; object-fit: cover; opacity: 0.44; }
+#photo .ov { position: absolute; inset: 0; background: rgba(8,44,32,0.3); }
+#photo .txt {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 28px 80px 40px;
+}
+
+/* ─── Divisions ─────────────────────────────────────────────── */
+
+#divisions { display: flex; }
+
+#divnav {
+  position: sticky; top: 4px;
+  align-self: flex-start;
+  height: calc(100vh - 4px); width: 164px;
+  background: #F5F2EC; border-right: 0.5px solid #ddd8cf;
+  display: flex; flex-direction: column; flex-shrink: 0;
+}
+.dn-hdr {
+  font-family: 'Josefin Sans'; font-size: 8px; letter-spacing: 0.12em;
+  color: rgba(15,78,72,0.35);
+  padding: 24px 20px 14px; border-bottom: 0.5px solid #ddd8cf;
+}
+.dn-i {
+  padding: 13px 20px; cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: border-left-color 0.25s, background 0.2s;
+}
+.dn-i:hover  { background: rgba(15,78,72,0.04); }
+.dn-i.on     { border-left-color: #E8B820; background: rgba(15,78,72,0.05); }
+.dn-i.on .dn-t { color: #0F4E48; font-weight: 600; }
+.dn-t {
+  font-family: 'Josefin Sans'; font-size: 10px; letter-spacing: 0.02em;
+  color: rgba(15,78,72,0.4); transition: color 0.2s;
+  margin-bottom: 3px;
+}
+.dn-sub {
+  font-family: 'Josefin Sans'; font-size: 8px;
+  color: rgba(15,78,72,0.3);
+}
+.dn-stat {
+  margin-top: auto; padding: 20px;
+  border-top: 0.5px solid #ddd8cf;
+}
+#dns-n {
+  font-family: 'Nunito'; font-weight: 900;
+  font-size: 32px; color: #0F4E48; line-height: 1; margin-bottom: 5px;
+  transition: opacity 0.25s;
+}
+#dns-l {
+  font-family: 'Josefin Sans'; font-size: 8px;
+  letter-spacing: 0.1em; color: rgba(15,78,72,0.42);
+  transition: opacity 0.25s;
+}
+
+#div-panels { flex: 1; min-width: 0; }
+.dp { min-height: 100vh; padding: 100px 68px; display: flex; flex-direction: column; justify-content: center; }
+
+/* ─── Type utilities ────────────────────────────────────────── */
+
+.eyebrow { font-family: 'Josefin Sans'; letter-spacing: 0.13em; }
+.stat-num {
+  font-family: 'Nunito'; font-weight: 900;
+  font-size: 180px; line-height: 0.82; letter-spacing: -0.04em;
+}
+.body-serif {
+  font-family: 'Zilla Slab'; font-weight: 300;
+  font-size: 15px; line-height: 1.9; color: #666;
+}
+.section-label {
+  font-family: 'Josefin Sans'; font-size: 9px; letter-spacing: 0.14em;
+}
+.section-title {
+  font-family: 'Zilla Slab'; font-weight: 300;
+  font-size: 42px; line-height: 1.08;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── Fixed infrastructure ───────────────────────────────────── -->
+<div id="tb"></div>
+
+<div id="sb">
+  <div id="sb-cap"></div>
+  <div class="sbs" data-s="hero"        style="flex:0.8; background:rgba(255,255,255,0.07);">
+    <span class="sbl" style="color:rgba(255,255,255,0.55);">OVERVIEW</span></div>
+  <div class="sbs" data-s="glance"      style="flex:1.4; background:#E8B820;">
+    <span class="sbl" style="color:rgba(0,0,0,0.42);">AT A GLANCE</span></div>
+  <div class="sbs" data-s="priorities"  style="flex:1.4; background:#5B6B32;">
+    <span class="sbl" style="color:rgba(255,255,255,0.6);">STRATEGIES</span></div>
+  <div class="sbs" data-s="performance" style="flex:1.2; background:#1A7A6A;">
+    <span class="sbl" style="color:rgba(255,255,255,0.6);">PERFORMANCE</span></div>
+  <div class="sbs" data-s="divisions"   style="flex:1.6; background:#0F4E48; border-top:0.5px solid rgba(255,255,255,0.07);">
+    <span class="sbl" style="color:rgba(255,255,255,0.55);">DIVISIONS</span></div>
+</div>
+
+<!-- ── Page content ──────────────────────────────────────────── -->
+<div id="content">
+
+  <!-- HERO -->
+  <section id="hero" class="sec" data-sec="hero">
+    <p class="eyebrow" style="font-size:9px; color:#E8B820; margin-bottom:20px;">HERITAGE COOPERATIVE</p>
+    <h1 style="font-family:'Zilla Slab'; font-weight:300; font-size:88px; color:#fff; line-height:0.9; letter-spacing:0.01em;">
+      GROWTH<br>WITH<br>RESILIENCE
+    </h1>
+    <p class="eyebrow" style="font-size:11px; color:rgba(255,255,255,0.35); letter-spacing:0.07em; margin-top:24px; margin-bottom:64px;">
+      LONG RANGE PLANNING &nbsp;·&nbsp; 2026 — 2028
+    </p>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="width:28px; height:1px; background:#E8B820;"></div>
+      <p class="eyebrow" style="font-size:8px; color:rgba(255,255,255,0.25);">SCROLL TO EXPLORE</p>
+    </div>
+    <!-- Decorative rings -->
+    <div style="position:absolute; right:-150px; top:50%; transform:translateY(-50%); width:580px; height:580px; border-radius:50%; border:1px solid rgba(232,184,32,0.07); pointer-events:none;"></div>
+    <div style="position:absolute; right:-60px;  top:50%; transform:translateY(-50%); width:360px; height:360px; border-radius:50%; border:1px solid rgba(232,184,32,0.04); pointer-events:none;"></div>
+  </section>
+
+  <!-- STAT 1: 100+ years -->
+  <section class="stat-sec sec" data-sec="glance" style="background:#F5F2EC;">
+    <p class="section-label" style="color:rgba(15,78,72,0.38); font-size:8px; margin-bottom:10px;">AT A GLANCE &nbsp;·&nbsp; 01</p>
+    <div class="stat-block" data-target="100">
+      <div style="display:flex; align-items:flex-start;">
+        <span class="stat-num ctr" style="color:#0F4E48;">100</span>
+        <span style="font-family:'Nunito'; font-weight:900; font-size:80px; color:#E8B820; margin-top:36px;">+</span>
+      </div>
+      <p class="section-label" style="font-size:12px; color:rgba(15,78,72,0.45); letter-spacing:0.12em; margin-top:14px;">
+        YEARS IN COOPERATIVE AGRICULTURE
+      </p>
+    </div>
+    <p class="body-serif" style="max-width:500px; margin-top:36px;">
+      Heritage has been farmer-owned and farmer-directed since 1924. A century of serving Ohio agriculture — building equity, not extracting it.
+    </p>
+  </section>
+
+  <!-- STAT 2: Member-owners -->
+  <section class="stat-sec sec" data-sec="glance" style="background:#0F4E48;">
+    <p class="section-label" style="color:rgba(232,184,32,0.5); font-size:8px; margin-bottom:10px;">AT A GLANCE &nbsp;·&nbsp; 02</p>
+    <div class="stat-block" data-target="1200">
+      <div style="display:flex; align-items:flex-start;">
+        <span class="stat-num ctr" style="color:#fff;">1,200</span>
+        <span style="font-family:'Nunito'; font-weight:900; font-size:80px; color:#E8B820; margin-top:36px;">+</span>
+      </div>
+      <p class="section-label" style="font-size:12px; color:rgba(255,255,255,0.32); letter-spacing:0.12em; margin-top:14px;">
+        MEMBER-OWNERS ACROSS OHIO
+      </p>
+    </div>
+    <p class="body-serif" style="max-width:500px; margin-top:36px; color:rgba(255,255,255,0.42);">
+      Every member an owner. Every dollar in savings returned. That structure is not a governance detail — it shapes every decision in this plan.
+    </p>
+  </section>
+
+  <!-- STRATEGIC PRIORITIES — accordion table -->
+  <section id="priorities" class="sec" data-sec="priorities">
+    <p class="section-label" style="color:rgba(15,78,72,0.38); font-size:8px; margin-bottom:10px;">STRATEGIC PRIORITIES</p>
+    <h2 class="section-title" style="color:#0F4E48;">Four bets.<br>Three years.</h2>
+    <div class="p-inner">
+      <div class="p-intro">
+        <p class="body-serif" style="color:#777; margin-bottom:28px;">
+          These four priorities drive capital allocation, team focus, and the operating decisions behind this plan. Each connects back to the cooperative's core purpose: building value for member-owners.
+        </p>
+        <p style="font-family:'Josefin Sans'; font-size:8px; letter-spacing:0.08em; color:rgba(15,78,72,0.32);">
+          TAP ANY ROW TO EXPAND
+        </p>
+      </div>
+      <div class="p-list">
+
+        <div class="acc-item open">
+          <div class="acc-head">
+            <span class="acc-num">01</span>
+            <div style="flex:1;">
+              <p class="acc-title">Grow Agronomy Market Share</p>
+              <p class="acc-sub">AGRONOMY &nbsp;·&nbsp; 2026 — 2028</p>
+            </div>
+            <span class="acc-arrow">›</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-body-inner">
+              <p>Targeted expansion of precision ag services and crop protection volume in counties where Heritage holds less than 25% market share. Investment in agronomist headcount and data tools is the primary lever.</p>
+              <div class="acc-tags">
+                <span class="tag tag-div">Agronomy</span>
+                <span class="tag tag-time">3-Year Horizon</span>
+                <span class="tag tag-div">Precision Ag</span>
+                <span class="tag tag-div">Headcount</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <div class="acc-head">
+            <span class="acc-num">02</span>
+            <div style="flex:1;">
+              <p class="acc-title">Modernize Grain Infrastructure</p>
+              <p class="acc-sub">GRAIN &nbsp;·&nbsp; 2026 — 2027</p>
+            </div>
+            <span class="acc-arrow">›</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-body-inner">
+              <p>Targeted upgrades to dryer capacity and receiving throughput at three high-volume elevator locations. Positions Heritage to handle projected volume increases without margin erosion from harvest bottlenecks.</p>
+              <div class="acc-tags">
+                <span class="tag tag-div">Grain</span>
+                <span class="tag tag-time">2-Year Horizon</span>
+                <span class="tag tag-div">Capital</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <div class="acc-head">
+            <span class="acc-num">03</span>
+            <div style="flex:1;">
+              <p class="acc-title">Expand Energy Service Territory</p>
+              <p class="acc-sub">ENERGY &nbsp;·&nbsp; 2026 — 2028</p>
+            </div>
+            <span class="acc-arrow">›</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-body-inner">
+              <p>Evaluate and pursue two to three acquisition or greenfield opportunities in adjacent counties. Energy is Heritage's fastest-growing division and has the infrastructure and team to absorb additional territory.</p>
+              <div class="acc-tags">
+                <span class="tag tag-div">Energy</span>
+                <span class="tag tag-time">3-Year Horizon</span>
+                <span class="tag tag-div">M&amp;A</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <div class="acc-head">
+            <span class="acc-num">04</span>
+            <div style="flex:1;">
+              <p class="acc-title">Deepen Member Loyalty</p>
+              <p class="acc-sub">ENTERPRISE &nbsp;·&nbsp; 2026 — 2028</p>
+            </div>
+            <span class="acc-arrow">›</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-body-inner">
+              <p>Formalize a multi-division loyalty program, improve digital touchpoints for member equity tracking, and expand the producer education series. Members using three or more Heritage divisions have 4× higher retention.</p>
+              <div class="acc-tags">
+                <span class="tag tag-div">All Divisions</span>
+                <span class="tag tag-time">3-Year Horizon</span>
+                <span class="tag tag-div">Digital</span>
+                <span class="tag tag-div">Retention</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /p-list -->
+    </div><!-- /p-inner -->
+  </section>
+
+  <!-- DIVISION PERFORMANCE — animated bar table -->
+  <section id="performance" class="sec" data-sec="performance">
+    <p class="section-label" style="color:rgba(15,78,72,0.38); font-size:8px; margin-bottom:10px;">DIVISION PERFORMANCE</p>
+    <h2 class="section-title" style="color:#0F4E48;">Where growth<br>is happening.</h2>
+    <div class="p-inner">
+      <div class="p-intro">
+        <p class="body-serif" style="color:#777; margin-bottom:24px;">
+          Revenue growth by division, year over year. Energy leads the pack; Feed is steady. Every division is growing — the question is where to concentrate capital to sustain it.
+        </p>
+        <p style="font-family:'Josefin Sans'; font-size:8px; letter-spacing:0.08em; color:rgba(15,78,72,0.28); line-height:1.6;">
+          Y/Y REVENUE GROWTH<br>2024 → 2025 (REPRESENTATIVE)
+        </p>
+      </div>
+      <div class="bar-rows" id="barrows">
+        <div class="bar-row">
+          <span class="bar-lbl">ENERGY</span>
+          <div class="bar-track">
+            <div class="bar-fill" data-w="89%" style="background:#0F4E48;"></div>
+          </div>
+          <span class="bar-val" style="color:#0F4E48;">+31%</span>
+          <span class="bar-note">fastest growing</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-lbl">GRAIN</span>
+          <div class="bar-track">
+            <div class="bar-fill" data-w="76%" style="background:#c49a00;"></div>
+          </div>
+          <span class="bar-val" style="color:#a07800;">+24%</span>
+          <span class="bar-note"></span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-lbl">AGRONOMY</span>
+          <div class="bar-track">
+            <div class="bar-fill" data-w="57%" style="background:#5B6B32;"></div>
+          </div>
+          <span class="bar-val" style="color:#5B6B32;">+18%</span>
+          <span class="bar-note"></span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-lbl">FEED</span>
+          <div class="bar-track">
+            <div class="bar-fill" data-w="27%" style="background:#8BB8A8;"></div>
+          </div>
+          <span class="bar-val" style="color:#4a8878;">+9%</span>
+          <span class="bar-note">steady</span>
+        </div>
+      </div><!-- /bar-rows -->
+    </div>
+  </section>
+
+  <!-- PHOTO BREAK -->
+  <div id="photo">
+    <img
+      src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1400&h=700&fit=crop&auto=format&q=78"
+      alt=""
+      onerror="this.style.display='none'"
+    >
+    <div class="ov"></div>
+    <div class="txt">
+      <div style="width:40px; height:2px; background:#E8B820; margin-bottom:16px; opacity:0.6;"></div>
+      <p class="eyebrow" style="font-size:8px; color:#E8B820; margin-bottom:12px; opacity:0.75;">HERITAGE COOPERATIVE</p>
+      <p style="font-family:'Zilla Slab'; font-weight:300; font-size:36px; color:#fff; line-height:1.1;">100 years. Still growing.</p>
+    </div>
+  </div>
+
+  <!-- DIVISIONS -->
+  <div id="divisions">
+
+    <!-- Sticky left nav -->
+    <div id="divnav">
+      <p class="dn-hdr">DIVISIONS</p>
+
+      <div class="dn-i on" data-d="agronomy">
+        <p class="dn-t">Agronomy</p>
+        <p class="dn-sub">Seeds &amp; crop protection</p>
+      </div>
+      <div class="dn-i" data-d="grain">
+        <p class="dn-t">Grain</p>
+        <p class="dn-sub">Origination &amp; storage</p>
+      </div>
+      <!-- Additional divisions would be added here for the full build -->
+      <div class="dn-stat">
+        <div id="dns-n">60K+</div>
+        <div id="dns-l">ACRES MANAGED</div>
+      </div>
+    </div>
+
+    <!-- Division panels -->
+    <div id="div-panels">
+
+      <!-- AGRONOMY -->
+      <div class="dp sec" data-sec="divisions" data-d="agronomy" style="background:#fff;">
+        <p class="section-label" style="color:rgba(15,78,72,0.35); font-size:8px; margin-bottom:12px;">AGRONOMY</p>
+        <h2 style="font-family:'Zilla Slab'; font-weight:700; font-size:36px; color:#0F4E48; line-height:1.1; margin-bottom:20px;">
+          The foundation<br>of every acre.
+        </h2>
+        <p class="body-serif" style="max-width:500px; margin-bottom:40px;">
+          From seed selection to crop protection inputs, Heritage Agronomy is in the field with producers from planting to harvest. Precision ag services, digital scouting tools, and a team of certified agronomists serving over 1,200 producers across the region.
+        </p>
+        <div style="display:flex; gap:48px; flex-wrap:wrap;">
+          <div>
+            <p style="font-family:'Nunito'; font-weight:900; font-size:48px; color:#0F4E48; margin:0; line-height:1;">
+              60K<span style="font-size:28px; color:#E8B820;">+</span>
+            </p>
+            <p class="section-label" style="color:rgba(15,78,72,0.45); font-size:8px; margin-top:8px;">ACRES MANAGED</p>
+          </div>
+          <div>
+            <p style="font-family:'Nunito'; font-weight:900; font-size:48px; color:#0F4E48; margin:0; line-height:1;">
+              1.2K<span style="font-size:28px; color:#5B6B32;">+</span>
+            </p>
+            <p class="section-label" style="color:rgba(15,78,72,0.45); font-size:8px; margin-top:8px;">PRODUCERS</p>
+          </div>
+          <div>
+            <p style="font-family:'Nunito'; font-weight:900; font-size:48px; color:#0F4E48; margin:0; line-height:1;">
+              18<span style="font-size:28px; color:#E8B820;">%</span>
+            </p>
+            <p class="section-label" style="color:rgba(15,78,72,0.45); font-size:8px; margin-top:8px;">Y/Y GROWTH</p>
+          </div>
+        </div>
+        <div style="margin-top:48px; padding-top:32px; border-top:0.5px solid #e8e0d4; max-width:500px;">
+          <p class="section-label" style="color:rgba(15,78,72,0.35); font-size:8px; margin-bottom:14px;">2026 — 2028 FOCUS</p>
+          <p class="body-serif" style="color:#888;">
+            Expand certified agronomist coverage into three underserved counties. Build out the precision ag data platform to serve 40% of managed acres by 2027.
+          </p>
+        </div>
+      </div>
+
+      <!-- GRAIN -->
+      <div class="dp sec" data-sec="divisions" data-d="grain" style="background:#F5F2EC;">
+        <p class="section-label" style="color:rgba(15,78,72,0.35); font-size:8px; margin-bottom:12px;">GRAIN</p>
+        <h2 style="font-family:'Zilla Slab'; font-weight:700; font-size:36px; color:#0F4E48; line-height:1.1; margin-bottom:20px;">
+          Moving the harvest.
+        </h2>
+        <p class="body-serif" style="max-width:500px; margin-bottom:28px;">
+          Origination, storage, and merchandising across 12 elevator locations. Volume has grown steadily as producers consolidate bushels with Heritage's market access and competitive bids.
+        </p>
+
+        <!-- Chart -->
+        <p style="font-family:'Josefin Sans'; font-size:8px; letter-spacing:0.1em; color:rgba(15,78,72,0.38); margin-bottom:12px;">
+          BUSHEL VOLUME INDEX &nbsp;·&nbsp; 2020 — 2025
+        </p>
+        <svg id="gchart" viewBox="0 0 440 80" style="width:100%; max-width:480px; height:65px; display:block; overflow:visible; margin-bottom:36px;">
+          <line x1="0" y1="70" x2="440" y2="70" stroke="#ccc5b8" stroke-width="0.5"/>
+          <line x1="0" y1="48" x2="440" y2="48" stroke="#ccc5b8" stroke-width="0.5" stroke-dasharray="4,5"/>
+          <line x1="0" y1="26" x2="440" y2="26" stroke="#ccc5b8" stroke-width="0.5" stroke-dasharray="4,5"/>
+          <text x="0"   y="79" fill="rgba(15,78,72,0.35)" style="font-family:'Josefin Sans';font-size:7px;">'20</text>
+          <text x="82"  y="79" fill="rgba(15,78,72,0.35)" style="font-family:'Josefin Sans';font-size:7px;">'21</text>
+          <text x="166" y="79" fill="rgba(15,78,72,0.35)" style="font-family:'Josefin Sans';font-size:7px;">'22</text>
+          <text x="250" y="79" fill="rgba(15,78,72,0.35)" style="font-family:'Josefin Sans';font-size:7px;">'23</text>
+          <text x="334" y="79" fill="rgba(15,78,72,0.35)" style="font-family:'Josefin Sans';font-size:7px;">'24</text>
+          <text x="415" y="79" fill="rgba(15,78,72,0.35)" style="font-family:'Josefin Sans';font-size:7px;">'25</text>
+          <path id="gline"
+            d="M 0,55 C 30,55 36,59 88,59 C 122,59 128,47 176,47 C 210,47 216,37 264,37 C 298,37 304,27 352,27 C 386,27 392,17 440,17"
+            fill="none" stroke="#0F4E48" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="0"   cy="55" r="4" fill="#E8B820" class="gc" style="opacity:0; transition:opacity 0.35s 1.6s;"/>
+          <circle cx="88"  cy="59" r="4" fill="#E8B820" class="gc" style="opacity:0; transition:opacity 0.35s 1.9s;"/>
+          <circle cx="176" cy="47" r="4" fill="#E8B820" class="gc" style="opacity:0; transition:opacity 0.35s 2.15s;"/>
+          <circle cx="264" cy="37" r="4" fill="#E8B820" class="gc" style="opacity:0; transition:opacity 0.35s 2.4s;"/>
+          <circle cx="352" cy="27" r="4" fill="#E8B820" class="gc" style="opacity:0; transition:opacity 0.35s 2.65s;"/>
+          <circle cx="440" cy="17" r="4" fill="#E8B820" class="gc" style="opacity:0; transition:opacity 0.35s 2.9s;"/>
+        </svg>
+
+        <div style="display:flex; gap:48px; flex-wrap:wrap;">
+          <div>
+            <p style="font-family:'Nunito'; font-weight:900; font-size:48px; color:#0F4E48; margin:0; line-height:1;">
+              30M<span style="font-size:28px; color:#E8B820;">+</span>
+            </p>
+            <p class="section-label" style="color:rgba(15,78,72,0.45); font-size:8px; margin-top:8px;">BUSHELS HANDLED</p>
+          </div>
+          <div>
+            <p style="font-family:'Nunito'; font-weight:900; font-size:48px; color:#0F4E48; margin:0; line-height:1;">12</p>
+            <p class="section-label" style="color:rgba(15,78,72,0.45); font-size:8px; margin-top:8px;">ELEVATOR LOCATIONS</p>
+          </div>
+          <div>
+            <p style="font-family:'Nunito'; font-weight:900; font-size:48px; color:#0F4E48; margin:0; line-height:1;">
+              24<span style="font-size:28px; color:#E8B820;">%</span>
+            </p>
+            <p class="section-label" style="color:rgba(15,78,72,0.45); font-size:8px; margin-top:8px;">Y/Y GROWTH</p>
+          </div>
+        </div>
+
+        <div style="margin-top:48px; padding-top:32px; border-top:0.5px solid #ddd8cf; max-width:500px;">
+          <p class="section-label" style="color:rgba(15,78,72,0.35); font-size:8px; margin-bottom:14px;">2026 — 2027 FOCUS</p>
+          <p class="body-serif" style="color:#888;">
+            Dryer capacity and throughput upgrades at three locations. Target: reduce harvest receiving queue time by 30% by fall 2027.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /div-panels -->
+  </div><!-- /divisions -->
+
+</div><!-- /content -->
+
+<script>
+(function () {
+  'use strict';
+
+  const tb     = document.getElementById('tb');
+  const sb     = document.getElementById('sb');
+  const sbls   = sb ? sb.querySelectorAll('.sbl') : [];
+  const dStatN = document.getElementById('dns-n');
+  const dStatL = document.getElementById('dns-l');
+
+  const secColors = {
+    hero:        '#0F4E48',
+    glance:      '#E8B820',
+    priorities:  '#5B6B32',
+    performance: '#1A7A6A',
+    divisions:   '#0F4E48'
+  };
+  const divData = {
+    agronomy: { n: '60K+',  l: 'ACRES MANAGED'    },
+    grain:    { n: '30M+',  l: 'BUSHELS HANDLED'  }
+  };
+  const divBarColor = {
+    agronomy: '#5B6B32',
+    grain:    '#c49a00'
+  };
+
+  // ── Sidebar hover ──────────────────────────────────────
+  if (sb) {
+    sb.addEventListener('mouseenter', () => {
+      sb.style.width = '106px';
+      sbls.forEach(l => l.style.opacity = '1');
+    });
+    sb.addEventListener('mouseleave', () => {
+      sb.style.width = '20px';
+      sbls.forEach(l => l.style.opacity = '0');
+    });
+  }
+
+  // ── Section tracking: top bar + sidebar active ─────────
+  const secs = document.querySelectorAll('[data-sec]');
+  const sio = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const s = e.target.getAttribute('data-sec');
+      if (tb && s !== 'divisions') tb.style.background = secColors[s] || '#0F4E48';
+      if (sb) {
+        sb.querySelectorAll('.sbs').forEach(seg => {
+          seg.style.borderRight = seg.getAttribute('data-s') === s
+            ? '2px solid rgba(255,255,255,0.65)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.35 });
+  secs.forEach(s => sio.observe(s));
+
+  // ── Accordion ──────────────────────────────────────────
+  document.querySelectorAll('.acc-head').forEach(h => {
+    h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+  });
+
+  // ── Stat counter ───────────────────────────────────────
+  const stIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting || e.target.dataset.done) return;
+      e.target.dataset.done = '1';
+      const el  = e.target.querySelector('.ctr');
+      if (!el) return;
+      const tgt = parseInt(e.target.getAttribute('data-target').replace(/,/g, ''));
+      const t0  = performance.now();
+      (function tick(now) {
+        const p   = Math.min((now - t0) / 1800, 1);
+        const v   = Math.round((1 - Math.pow(1 - p, 3)) * tgt);
+        el.textContent = v.toLocaleString();
+        if (p < 1) requestAnimationFrame(tick);
+      })(performance.now());
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-block').forEach(b => stIO.observe(b));
+
+  // ── Bar chart animation ────────────────────────────────
+  const barIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting || e.target.dataset.drawn) return;
+      e.target.dataset.drawn = '1';
+      e.target.querySelectorAll('.bar-fill').forEach((f, i) => {
+        setTimeout(() => { f.style.width = f.getAttribute('data-w'); }, i * 130);
+      });
+    });
+  }, { threshold: 0.4 });
+  const barrows = document.getElementById('barrows');
+  if (barrows) barIO.observe(barrows);
+
+  // ── Grain chart draw ───────────────────────────────────
+  const gline  = document.getElementById('gline');
+  const grainP = document.querySelector('.dp[data-d="grain"]');
+  if (gline && grainP) {
+    const len = gline.getTotalLength ? gline.getTotalLength() : 500;
+    gline.style.strokeDasharray  = `${len} ${len}`;
+    gline.style.strokeDashoffset = len;
+    const gcIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting || e.target.dataset.drawn) return;
+        e.target.dataset.drawn = '1';
+        gline.style.transition    = 'stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1)';
+        gline.style.strokeDashoffset = '0';
+        document.querySelectorAll('.gc').forEach(c => c.style.opacity = '1');
+      });
+    }, { threshold: 0.4 });
+    gcIO.observe(grainP);
+  }
+
+  // ── Division panel tracking ────────────────────────────
+  let curDiv = 'agronomy';
+  const dpIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const d = e.target.getAttribute('data-d');
+      if (!d || d === curDiv) return;
+      curDiv = d;
+      document.querySelectorAll('.dn-i').forEach(el => {
+        const me = el.getAttribute('data-d') === d;
+        el.classList.toggle('on', me);
+        const t = el.querySelector('.dn-t');
+        if (t) {
+          t.style.color      = me ? '#0F4E48' : 'rgba(15,78,72,0.4)';
+          t.style.fontWeight = me ? '600'     : '400';
+        }
+      });
+      if (dStatN && dStatL && divData[d]) {
+        dStatN.style.opacity = '0'; dStatL.style.opacity = '0';
+        setTimeout(() => {
+          dStatN.textContent   = divData[d].n;
+          dStatL.textContent   = divData[d].l;
+          dStatN.style.opacity = '1'; dStatL.style.opacity = '1';
+        }, 200);
+      }
+      if (tb) tb.style.background = divBarColor[d] || '#0F4E48';
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.dp').forEach(p => dpIO.observe(p));
+
+})();
+</script>
+
+</body>
+</html>
